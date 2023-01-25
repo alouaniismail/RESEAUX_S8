@@ -1,0 +1,227 @@
+1->Applications TCP/IP:
+
+Application POP(post office protocol) :
+
+=>
+	Protocole qui permet de récupérer les courriers éléctroniques situées sur un serveur de messagerie éléectronique. L'opération inverse c'est à dire la remise de courrier à un serveur afin qu'il soit distribué, s'effectue généralement avec un autre protocole: SMTP.
+
+Application TELNET : 
+
+=>
+	Protocole de communication utilisé pour se connecter à un ordinateur distant à travers un réseau. Il permet aux utilisateurs de se connecter à un serveur et de contrôler à distance les ordinateurs en utilisant une interface de ligne de commande. Il est généralement utilisé pour administrer les serveurs et les réseaux. 
+	Donc RTCP et Telnet sont deux protocoles différents qui ont des fonctions différentes, RTCP est utilisé pour surveiller les performances de flux de données en temps réel, tandis que Telnet est utilisé pour la connexion à distance à un ordinateur via une interface de ligne de commande.
+
+2->Utilisations des couches OSI de application dans TCP/IP:
+
+Modèle OSI: modèle très utile dans certains domaines:(session, présentation, application)
+
+a-signalisation téléphonique(téléphonie sur ip avant(session)). =>session couche cible.
+
+b-RPC(remote procedure call) : Protocole qui permet à des programmes exécutés sur des ordinateurs différents de se communiquer comme s'ils étaient exécutés sur le même ordinateur. Il utilise des protocoles de communication tels que TCP/IP pour établir une connexion entre les programmes et échanger des données. En gros, il permet à un programme de demander à un autre programme de réaliser une tâche et de recevoir les résultats de cette tâche.(communication interprocessus en utilisation tcp/ip) =>couche application cible.
+
+c-SIP(session initialisation protocol) =>couche session cible.
+
+d-RTCP(Real-Time Transport Control Protocol) : Protocole utilisé pour surveiller les performances et la qualité des flux de données en temps réel, comme les flux de vidéo et de audio en utilisant RTP (Real-time Transport Protocol). Il permet de mesurer les statistiques de débit, la perte de paquets, les jitter qui regroupent un terme Jitter utilisé pour décrire la variation de temps d'arrivée des paquets dans un flux de données réseau. Il est généralement mesuré en millisecondes et peut être causé par des facteurs tels que la congestion du réseau, la saturation des liens et des erreurs de transmission. =>entre session et transport cible(s).
+
+e-RTSP(Real-Time Streaming Protocol) est un protocole utilisé pour la commande et la livraison de flux vidéo en temps réel sur un réseau IP. Il permet à un client de contrôler la lecture de flux vidéo en direct ou enregistrés, tels que la lecture, la pause et la recherche, à partir d'un serveur de diffusion en continu. RTSP utilise TCP (Transmission Control Protocol) ou UDP (User Datagram Protocol) pour établir une connexion réseau et échanger des commandes et des données entre le client et le serveur. Il est totalement différent de RTCP ou bien RTP que RTCP utilise. =>couche application cible.
+
+3->Protocoles distincts des différentes 3 couches:
+
+a->session(ouverture d'un tuyau où va transiter la première requête ou une réponse à celle -ci): 	SIP(exemple).
+
+b->présentation(comment seront présentées les données): 
+	Exemple: XDR(eXternal(eXterne) Data Representation) pour la representation des donnees par encodage (marshalling(triage)) et decodage(unmarshalling(non-triage)).
+
+c->application(les applications que l'utilisateur appelle ; par exemple un site web qui tente de consulter=>protocole HTTP/HTTPS, ou bien un message reçu qui est décodé tout à la fin avec le protocole inverse à SMTP(POP), on découvre le message(sens inverse de communication tcp/ip)):   
+
+	Exemple: NFS(network file system) qui est un protocole de partage de fichiers qui permet à des utilisateurs sur des ordinateurs différents d'accéder et de manipuler des fichiers sur un système de fichiers à distance comme s'ils étaient locaux. Il utilise également les protocoles de communication TCP/IP pour établir une connexion entre les ordinateurs et échanger des données. Il est largement utilisé pour partager des fichiers entre différents systèmes d'exploitation, tels que Linux et Windows. NFS est très utile pour les environnements de réseau ou les entreprises pour partager les données facilement entre les différents utilisateurs et les différents systèmes.
+Cela permet à un ordinateur d'accéder via un réseau à des fichiers distants. Il fait partie de la couche application du modèle OSI et utilise le protocole RPC. Ce système de fichiers en réseau permet de partager des données principalement entre systèmes UNIX. Des versions existent pour Macintosh ou Microsoft Windows. Developpement: Microsystems. (1984) Ce sont des fichiers qui apparaissent parfois sur des dépôts git et difficile de les enlever.
+
+	Exemple2: RMI(Remote Method Invocation) qui est en français l'invocation de méthodes à distance est un mécanisme de Java qui permet à une application de faire des appels de méthode sur des objets qui sont situés sur un autre ordinateur. Cela se fait en utilisant les protocoles TCP/IP pour établir une connexion réseau entre l'application cliente et le serveur qui héberge l'objet distant. Le client envoie une requête à travers la connexion réseau pour appeler une méthode sur l'objet distant, et le serveur exécute la méthode et renvoie le résultat au client. Cela permet aux développeurs de créer des applications distribuées, où certaines parties de l'application sont exécutées sur des ordinateurs différents et communiquent via des appels de méthode à distance.
+	
+	Exemple3: En résumé: (JEE,CORBA,SOAP,REST)
+		JEE est un ensemble de technologies pour développer des applications d'entreprise ; CORBA est un standard de communication pour les systèmes distribués ; SOAP est un protocole de communication pour les applications distribuées qui utilise XML sur HTTP ; REST est une architecture pour les applications distribuées qui utilise des protocoles web standard.
+
+En détails: (intéressant)
+
+1)-JEE (Java Enterprise Edition) est un ensemble de technologies Java pour développer des applications d'entreprise, comme les systèmes de gestion de contenu, les systèmes de gestion de relations clients, les applications bancaires en ligne.
+2)-CORBA (Common Object Request Broker Architecture) est un standard de communication pour les systèmes distribués qui permet à des objets logiciels sur différentes plates-formes de communiquer entre eux.
+3)-SOAP (Simple Object Access Protocol) est un protocole de communication pour les applications distribuées qui permet l'échange de données structurées en utilisant le format XML sur un réseau, généralement via HTTP.
+4)-REST (Representational State Transfer) est une architecture pour les applications distribuées qui utilise des protocoles web standard, comme HTTP et URI(Un URI, de l'anglais Uniform Resource Identifier, soit littéralement identifiant uniforme de ressource, est une courte chaîne de caractères identifiant une ressource sur un réseau (par exemple une ressource Web) physique ou abstraite, et dont la syntaxe respecte une norme d'Internet mise en place pour le World Wide Web (voir RFC 3986). La norme était précédemment connue sous le terme UDI1), pour échanger des données.
+
+Rq:
+Un réseau distribué est un système de réseau informatique où les composants du programme et les données dépendent de plusieurs sources. 
+Rq2:
+L’architecture distribuée ou l'informatique distribuée désigne un système d'information ou un réseau pour lequel l'ensemble des ressources disponibles ne se trouvent pas au même endroit ou sur la même machine. Ce concept, dont une version peut être une combinaison de transmissions du type client-serveur, s'oppose à celui d'informatique centralisée.(L'informatique centralisée ou l'architecture centralisée rassemble les ressources nécessaires à un traitement sur un hôte central, généralement à l'aide de terminaux qui sont connectés à un ordinateur central.)
+
+
+4->Ports standarts de ces applications:
+	
+ports de quelques applications classiques: 
+HTTP(80)
+SMTP(25)
+DNS(53)
+HTTPS(443) sur TCP ou UDP (pour les 4.)
+
+Portmap:(service annuaire : un annuaire web, répertoire web, annuaire Internet ou répertoire Internet qui est un site web proposant une liste classée de sites Web.(consulter le contenu en 'profondeur'))
+
+=>Portmap(111) est un service qui est utilisé pour mapper les ports utilisés par les différents services de réseau (comme NFS(network file system) et RPC(remote procedure call)) sur un système d'exploitation. Il est généralement utilisé pour mapper les ports utilisés par les protocoles de réseau sur les ports TCP et UDP standard. Le numéro de port utilisé par Portmap est le 111. Il est généralement utilisé sur les systèmes d'exploitation basés sur UNIX pour permettre aux différents services de réseau de communiquer entre eux.(Support de nombreaux autres services)
+
+=>Il est important de noter que Portmap est considéré comme un service obsolète et n'est plus utilisé dans les systèmes d'exploitation récents, il a été remplacé par RPCBind, qui est plus sécurisé et efficace.(RPCbind surtout que Portmap(111) transformer les numeros de ports RPC utilisés en entière classe en numéro de port de logiciel DARPA)
+
+=>Portmap est un logiciel daemon(sans contrôle direct d'un utilisateur) sous Unix/Linux qui convertit les numéros de programmes RPC en numéros de port logiciel DARPA. Son but initial était de limiter le nombre de ports utilisés, mais il a eu peu de succès et n'est plus utilisé que pour:
+    NFS (partage de fichiers)
+    FAM (File Alteration Monitor) : moniteur de modification de fichier
+    NIS (Network Information Service), logiciel d'annuaire .
+
+
+5-Découverte de port via une signalisation ou autres moyens:
+
+Il existe plusieurs méthodes pour découvrir les ports ouverts sur un système ou un réseau. Les deux méthodes les plus courantes sont les signaux d'exploration et les outils d'analyse de réseau. 
+
+• Exploration de signaux: Il s'agit d'une méthode dans laquelle un utilisateur envoie des requêtes à un système ou un réseau pour découvrir les ports ouverts. Les outils les plus couramment utilisés pour cela sont les commandes ping et telnet(Les commandes telnet permettent de communiquer avec un ordinateur distant qui utilise le protocole Telnet.). 
+
+• Outils d'analyse de réseau: Il s'agit d'une méthode dans laquelle un utilisateur utilise des outils dédiés pour scanner un système ou un réseau pour découvrir les ports ouverts. Les outils les plus couramment utilisés pour cela sont Nmap, Nessus et OpenVAS. Ces outils peuvent être utilisés pour scanner des ports individuels ou des plages de ports, et ils peuvent également fournir des informations détaillées sur les services en cours d'exécution sur un système ou un réseau. 
+
+(Résumé des outils dans le 2ième cas d'analyse de réseau vs. exploration de signaux: Nmap, Nessus, OpenVAS.)
+
+Remarque importante:
+
+Il est important de noter que l'exploration de signaux et l'utilisation d'outils d'analyse de réseau peuvent être considérées comme des activités malveillantes si elles sont effectuées sur des systèmes ou des réseaux sans autorisation.
+
+
+6-Couche session: La 1ère: fonctions principaux:
+
+Attention: ne s'occupe pas de la communication entre entitées.
+Objectif: Organisation du dialogue entre entitées.
+Système de synchronisation + différence majeure avec la couche transport + fournit la qualitée de service + s'assure que les données sont bien reçues + s'assure du tour de parole bien fait.
+=>Différence avec la couche 4 du mdèle OSI:
+Trois cas possibles: 
+/correspondance biunivoque(2 flèches entières cas basique)
+/plusieurs sessions successives établies sur une même couche transport(par exemple une couche transport permet l'établissement de la connexion avec 2 sessions ouvertes différentes mais les mêmes données, le même mode de transmission et les mêmes numéros de séquence des 2 côtées)
+/une même session s'étend sur plusieurs connexions de transport(arrêt/reprise cas basique avec connexion ré-établie après une panne redemander le SYNC puis refaire la même chose).
+
+La fonction multiplexage qui est le mécanisme qui permet à plusieurs flux de partager une connexion réseau unique ; cela signifie que plusieurs applications ou processus peuvent utiliser le même canal de communication pour envoyer et recevoir des données simultanément, plutôt d'avoir à utiliser des canaux séparés pour chaque flux de données (types: par port, par @IP, par processus) n'est pas présente dans la couche session.
+
+>Le multiplexage en TCP est la capacité à gérer plusieurs connexions simultanées entre différents programmes sur un ordinateur ou entre différents ordinateurs. Cela permet à plusieurs processus de partager une même connexion réseau et de s'envoyer des données de manière indépendante les uns des autres. 
+>La couche de session est responsable de l'établissement, de la gestion et de la terminaison des sessions de communication entre les différents programmes. Elle permet de synchroniser les données et de s'assurer que les données sont bien reçues. 
+>La couche de transport, quant à elle, est responsable de la transmission des données entre les programmes. Elle s'occupe de la fiabilité de la transmission, en garantissant que les données sont correctement reçues et en effectuant des retransmissions en cas d'erreur. Elle gère également la segmentation des données, c'est-à-dire la division des données en paquets pour les transmettre sur le réseau. 
+
+
+Conclusion:
+Le multiplexage de plusieurs sessions sur une même connexion de Transport est impossible.
+(via processus OK type0 trivialement vu)
+Services: Libération, établissement de connexion et transfert de données.
+(dialogue par jeton)
+
+Synchronisation : proposer des outils de reprise sur erreur (liées aux couches supèrieures)
+_majeune=>SYNC au début d'une ouverture de connexion TCP.
+_mineure=>à la fin (à la fermeture d'une connextion TCP "4-way-handshaking").
+(2 types)
+*Là en couche session:
+	
+	La synchronisation majeure ou mineure dans la couche session dépend de la situation spécifique.
+
+	La synchronisation majeure est utilisée pour synchroniser les données à un niveau élevé, comme lorsque plusieurs utilisateurs accèdent à une base de données en même temps. Cela peut nécessiter l'utilisation de verrous pour empêcher les conflits d'accès simultanés. 
+
+	La synchronisation mineure est utilisée pour synchroniser les données à un niveau inférieur, comme lorsqu'un utilisateur effectue une mise à jour sur un enregistrement spécifique. Cela peut nécessiter l'utilisation de verrous de ligne ou de verrous de page pour empêcher les conflits d'accès simultané. 
+
+	La synchronisation mineure est utilisée pour synchroniser les données à un niveau encore plus fin, comme lorsqu'un utilisateur effectue une mise à jour sur un champ spécifique d'un enregistrement. Cela peut nécessiter l'utilisation de verrous de champ pour empêcher les accès simultanés.
+	
+6-Couche plus haute: 6: présentation:
+
+<=>syntaxe et sémantique des informations.(à retenir: à partir de syntaxe)
+=>assurer le codage / décodage des données.
+Rq: La représentation des données au sein d'un système réèl dépend de son architecture.
+
+Les différents syntaxes utilisées par la couche 6:
+
+	***La syntaxe abstraite(dialoguer avec la couche 7(appplication)) décrit la structure logique d'un programme ou d'un langage de programmation(structure générique des données(types de données traités)).
+	
+	***la syntaxe concrète(dans le système local) décrit la forme physique ou syntaxique d'un programme ou d'un langage de programmation.(la représentation des données dans le système local) 
+	
+	***La syntaxe de transfert décrit les règles utilisées pour transmettre des données à travers un réseau.(ou bien la représentation des donnees echangees entre les couche presentation de 2 systemes par l'intermediaire de la couche session)
+
+Rq(2): les règles de codage permettent de passer de la syntaxe concrète locale vers la syntaxe de transfert.(car le premier est plus codé, le deuxième définit ce qu'il y a au-dessus du manteau donc il faut une fonction qui permet de coder un x donc de la syntaxe concrète locale vers la syntaxe de transfert)
+
+	***Les règles de codage(syntaxe concrete locale => syntaxe de transfert (f(x) avec x donné à transférer)et reciproquement!!!) en TCP/IP décrivent comment les données sont encodées et transmises à travers un réseau en utilisant les protocoles TCP et IP. Ces règles incluent des choses telles que le format des paquets de données, la gestion des erreurs de transmission et la gestion de la congestion de réseau.
+	
+>Contexte de presentation:(constitution)
+      {Syntaxe abstraite, Syntaxe de transfert}
+
+C'est ce que utilise la couche présentation:
+la syntaxe abstraite pour dialoguer avec la couche 7 du modèle OSI(application)
+la syntaxe concrète locale: représentation des données sur le système local
+la syntaxe de transfert: réèllement entre 2 couches de présentation. 
+les règles de codage finalement qui permettent de passer de la syntaxe concrète locale à la syntaxe de transfert principalement et reciproquement aussi. (syntaxe concrete locale=>syntaxe de transfert)
+
+>Unitées fonctionnelles de la couche présentation: (spécifiques)
+>>Noyau de presentation <=> contexte de representation negocies lors de l'ouverture de connexion
+>>Gestion de contextes <=> ajout / suppression de ces derniers durant la connexion
+>>Restauration de contextes <=> resynchronisation de la representation implique reprendre les contextes anterieurs. La derniere(l'avant dernière unitée) modifie également le fonctionnement des activitées.
+
+Remarques sur les unitées fonctionnelles spécifiques de la couche 6/application(tcp/ip):
+ La 1ère tjrs utilisée.
+ La resynchronisation de la représentation:
+ 	***La resynchronisation de la représentation est un processus utilisé pour s'assurer que les données transmises sur un réseau de télévision par protocole Internet (IPTV) restent synchronisées entre les différents dispositifs du réseau. Cela permet de garantir que les données transmises sont correctement affichées sur l'écran de télévision de l'utilisateur final. La résynchronisation peut être effectuée à différents niveaux du réseau, comme au niveau de l'encodeur vidéo ou au niveau du routeur réseau.
+ 	
+-Notation de syntaxe abstraite(ASN.1):
+
+>Permet de décrire les types de données qui peuvent être codés et transmises au travers de la couche présentation.
+
+>Exemples d'utilisation:
+
+SNMP(simple network management protocol)
+
+MIB(management information base) <=> Ensemble des objets geres par SNMP
+
+Objets de la MIB references par des identificateurs ASN.1: 
+
+=> 
+Exemple:
+{iso(1) identified-organization(3) dod(6) internet(1) administration(2) mib-2(1) tcp(6)} 
+
+=>
+Explication longue(et bien cela vaut la peine d'apprendre l'asn.1) de ce format d'ecriture:
+
+
+	Ce que nous avons indiqué est un exemple d'une notation d'Object Identifier (OID) utilisée dans le système de gestion de base de données (SNMP) pour identifier les objets gérés dans un réseau. 
+
+Une OID est une série de nombres séparés par des points qui identifie de manière unique un objet géré dans un réseau SNMP. Chaque nombre représente un niveau d'identification dans une arborescence hiérarchique d'objets gérés. 
+
+Dans l'exemple que vous avez donné, l'OID identifie un objet géré spécifique dans l'arborescence de l'Internet Assigned Numbers Authority (IANA) qui est administré par l'U.S. Department of Defense (DOD). 
+
+Plus précisément, l'OID est décomposé comme suit : 
+
+• iso (1) : indique qu'il s'agit d'une identification ISO 
+
+• identified-organization (3) : indique l'organisation qui a attribué les identificateurs suivants 
+
+• dod (6) : indique que l'organisation qui a attribué les identificateurs suivants est le Department of Defense 
+
+• internet (1) : indique que l'identificateur est utilisé dans l'Internet 
+
+• administration (2) : indique que l'identificateur est utilisé pour l'administration 
+
+• mib-2 (1) : indique que l'identificateur est utilisé pour la version 2 de la MIB (Management Information Base) 
+
+• tcp (6) : indique que l'identificateur est utilisé pour les objets gérés relatifs à TCP (Transmission Control Protocol) 
+
+Il est important de noter que cet exemple n'est qu'une des nombreuses OID possible, et qu'il est difficile de déduire précisément à quoi correspond l'objet géré sans avoir un contexte plus large.
+
+
+Mib-2 est decrite en utilisant la syntaxe abstraite ASN.1 et implementé dans toutes les technologies utilisant tcp/ip.
+ 	
+ 	
+7-Couche la plus haute: 7(OSI vs. 4: tcp/ip): application:
+
+=>Elle offre aux processus d'application le moyen d'accèder à l'environnement OSI. 
+=>Les processus d'application <=>(informations) /des entitées d'application.
+
+8-DNS: DOMAIN NAME SYSTEM
+
+->ICAAN est chargé d'allouer l'espace des @ de protocole internet (IP), d'attribuer des identificateurs de protocole, de gérer le système de nom de domaine de premier niveau. 
+
+->Systeme de noms de domaine: DNS exploite le mode de nommage hiéarchique des entitées réseau Internet.(<=>succession de labels(étiquettes) composées de caractères et séparés par des .) 	
+
+=>Hiéarchie des noms de domaine:
