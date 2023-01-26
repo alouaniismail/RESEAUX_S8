@@ -225,3 +225,106 @@ Mib-2 est decrite en utilisant la syntaxe abstraite ASN.1 et implementé dans to
 ->Systeme de noms de domaine: DNS exploite le mode de nommage hiéarchique des entitées réseau Internet.(<=>succession de labels(étiquettes) composées de caractères et séparés par des .) 	
 
 =>Hiéarchie des noms de domaine:
+Niveau hiéarchique des étiquettes croissant: label à droite du point le plus à droite appelé domaine de premier niveau (TLD: TOP LEVEL DOMAIN)
+Initialement, les noms d'hôtes internet étaient limités au jeu de caractères: {A-Z, a-z} et des tirets. Prise en charge des caractères unicode pour des noms de domaine internationalisés. (IDN)
+(inclut les diactritiques)
+
+Rq:
+domaine<->enregitrement.(1ère chose à mettre dans la tête)
+car un nom de domaine peut être associé à:
+hôte, i.e: adresse IP.
+zone de courrier éléctronique i.e. serveur de courrier éléctronique
+zone de responsabilitée administrative
+(dans les déchiffrements(les noeuds de l'arbre) on retrouve cela(dans les sous-données d'un noeud donné par exemple qui va résoudre ou non la requête du ROOT (la racine))
+Rq2:
+>>La syntaxe des noms de domaine ne permet pas de distinguer un hhôte particulier d'un ensemble d'hôtes.(caractère technique, emplacement)
+>>Structure hiéarchique organisée en arbre correspondant au schéma de la délégation d'administration des noms.(qui permet d'enregistrer les domaines de niveau 2 niveau 3 si on est pas à la fin de l'arbre(parcours chemin depuis le niveau ROOT suivant une adresse particulière))
+
+8-1-Domaines de 1er niveau:
+-officiels(2 schémas (nom et adresse IP) inclus dans la même hiéarchie)/non officiels(ne participant pas à internet(réseau personnel))
+On peut ne pas appeler le dns en évoquant une adresse web à consulter via https://....:@IP/.... par exemple.
+	Domaines officiels de 1er niveau:
+_géographique: ISO 3166: code d'état (2 chiffres), exemples : .fr, .us, .ma, etc....
+_organisationnel: .com, .edu(enseignement), .gov, .mil(militaires), .net(sites majeurs actifs relatifs aux activitées réseaux), .int(organisations internationales), .arpa(domaine ARPANET(1er réseau internet développé aux états-unis)), .biz(monde des affaires), .org(autres organisations), .info(sites d'informations de toutes nature), .name(individus et particuliers). 
+
+Structure arborescente du DNS:
+www.example.com
+ROOT
+puis à gauche
+com
+puis à droite
+example.com
+puis direct
+www.example.com
+ça marche comme ça. 
+(constitution de Node)
+
+-Principe de la résolution de noms: 
+BUT: obtenir l'@ IP associée à un nom de domaine.
+moyen: système client/serveur distribué
+>>client: solveur de noms.
+>>serveur: serveur de noms.
+comment: utilisation d'un ensemble hiéarchisé de serveurs de noms communiquant par un réseau TCP/IP.
+Exemple du protocole DNS: client DNS et Serveur DNS (Port 53 TCP ou UDP)
+
+-Principe conceptuel de la résolution de noms:
+>>Un serveur de nom par noeud de l'arbre DNS
+>>tout solveur s'adresse au serveur racine
+
+-Principe de la résolution de noms dans une implémentation réelle:
+Rappel ET Définition entre autres:
+	Un serveur de nom DNS est un serveur qui convertit (ou peut) les noms de domaine en adresse IP(c'est pour cela on a mis le 'ou peut', cela fait appel partiellement à la hiéarchie des noms de domaine depuis le tld).
+Principe d'implémentation sous UNIX/bash:
+	Les solveurs et serveurs de noms peuvent gérer des caches contenant des entrées à durée de vie limitée. Exemple: $ipconfig/displaydns. La fraîcheur des réponses est indiquée au client -> TTL(time to live) DNS. En principe, un solveur s'adresse au serveur de noms de son domaine. Un serveur de noms qui n'est pas capable de répondre à une requête s'adresse à soit un autre serveur de noms (et pas service de noms!!!) (serveur de noms de niveau supèrieur) Ou au serveur racine. 
+	=>Résolution itérative || récursive. 
+	
+ON N'OUBLIE PAS QUE LE DNS EST UN REGROUPEMENT D'IMMENSES ARBRES.(en réalitée)
+
+8-2-Ressources DNS: 
+->Idée : Chaque noeud de l'arbre contient une ou plusieurs ressources.
+Une ressource est principalement constituée:
+1-Un type qui indique comment interpréter les données associées.
+2-Une durée de validité.(ttl)
+3-Un objet associé au nom pointée dans l'arbre.
+Types ou enregistrements DNS: 
+A: @ IPv4
+AAAA: @ IPv6
+CNAME: nom canonique, il permet de faire correspondre un alias au nom canonique.
+MX: liste des serveurs de courrier éléctronique et préférences.
+NS: nom du serveur de noms responsable de domaine.
+SOA: zones de responsabilitée gérées par le serveur de noms du domaine. Ce champs permet de décrire le serveur de noms ayant autorité sur la zone.
+PTR: Pointeur du nom de domaine
+SRV: Service mapping(nom machine+numéro port)
+TXT: Zone de texte libre
+Autres informations: serveurs SIP par exemple, etc....
+
+8-3-Zone d'autorité:
+Un serveur de noms définit une zone, c'est à dire un ensemble de domaines sur lequel le serveur a autoritée.
+Exemple: requête envoyée au serveur de nom
+	*Si celui-ci possède l'enregistrement dans son cache, il l'envoie à l'application, dans le cas contraire il interroge un serveur racine. 
+	*Le serveur de nom racibe renvoie une liste de serveurs de noms faisant autoritée sur le domaine. 
+Exemple(comme ça, cela va être compréhensible):
+=>Le serveur DNS de l'enseirb a autorité sur le domaine enseirb-matmeca.fr.(si on veut une adresse chelou à résoudre, on va utiliser le ROOT (l'appeler itérativement ou récursivement) qui va nous conduire au serveur DNS de l'enseirb.(serveur de noms) 
+(c'est trivial que enseirb-matmeca comme domaine, le serveur DNS de l'enseirb ait autorité sur enseirb-matmeca.fr comme nom de domaine)
+=>Plusieurs serveurs peuvent partager cette autorité, sans faire partie de ce domaine forcément : le serveur bxnms.u-bordeaux.fr(qui peut être vu comme un serveur de nom différemment dans un arbre) a autorité sur le domaine enseirb-matmeca.fr.
+
+?pq définir cela: car le ROOT nous envoie la liste des noms de domaine faisant autorité sur ce nom de domaine. (pour résolution d'adresse IP depuis un nom de domaine (3ième résolution d'adresse après l'ARP et l'RARP))
+
+?à ne pas oublier: Un serveur de noms définit une zone, c'est à dire: un ensemble de domaines sur lequel le serveur a autorité.(c'est à dire qu'en prenant par exemple un serveur de noms, on peut deviner s'il en existe un ensemble de domaines sur lequel le serveur a autorité)
+
+?Le serveur DNS de l'enseirb a une @ IP et c'est un serveur, il peut être considéré comme un serveur de noms ayant autorité sur le domaine enseirb-matmeca.fr. Comme bxnms.u-bordeaux.fr a autorité sur le domaine enseirb-matmeca.fr. Un serveur de noms peut définir une zone, c'est à dire un ou plusieurs domaines sur lequels il a autorité. 
+
+=>www.enseirb-matmeca.fr=>direct via le dns de l'enseirb à 99% des chances.
+et voici.
+
+
+8-3-Résolution inverse:
+Le DNS maintient un ss-arbre particulier sous la zone IN-ADDR.ARPA
+La branche d'adresse 209.85.229.104(qu'on veut résoudre grâce à la résolution inverse(www.google.com)) devient alors : 104.229.85.209.IN-ADDR.ARPA
+Rq:
+La ressource(PTR) se trouve dans la feuille de la branche et pointe alors vers google.com.
+Plus d'informations et de détails:
+	**La zone IN-ADDR.ARPA est un domaine DNS spécial utilisé pour la résolution inverse des adresses IP en noms de domaine. La résolution inverse est le processus qui consiste à trouver le nom de domaine associé à une adresse IP donnée.
+	**La zone IN-ADDR.ARPA est utilisée pour les adresses IP version 4 (IPv4) et elle est gérée par l'ICANN (Internet Corporation for Assigned Names and Numbers). Elle est structurée de manière à refléter la structure hiérarchique de l'adressage IP. Les adresses IP sont inversées et converties en une série de domaines en utilisant la notation à l'envers, puis ajoutées à la zone IN-ADDR.ARPA.
+	**Cela permet aux serveurs DNS de retrouver facilement le nom de domaine associé à une adresse IP donnée en effectuant une recherche dans la zone IN-ADDR.ARPA. Cela est utile pour les opérations de dépannage et de journalisation, ainsi que pour les applications de sécurité basées sur l'identité de l'hôte.
+	
