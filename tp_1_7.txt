@@ -328,3 +328,33 @@ Plus d'informations et de détails:
 	**La zone IN-ADDR.ARPA est utilisée pour les adresses IP version 4 (IPv4) et elle est gérée par l'ICANN (Internet Corporation for Assigned Names and Numbers). Elle est structurée de manière à refléter la structure hiérarchique de l'adressage IP. Les adresses IP sont inversées et converties en une série de domaines en utilisant la notation à l'envers, puis ajoutées à la zone IN-ADDR.ARPA.
 	**Cela permet aux serveurs DNS de retrouver facilement le nom de domaine associé à une adresse IP donnée en effectuant une recherche dans la zone IN-ADDR.ARPA. Cela est utile pour les opérations de dépannage et de journalisation, ainsi que pour les applications de sécurité basées sur l'identité de l'hôte.
 	
+8-4-Résumé du protocole DNS:
+Utilisation de la couche transport UDP ou TCP, port 53.
+>Plusieurs requêtes ou réponses possibles dans un message.(hiéarchie au début)
+-requête:
+_nom de domaine à résoudre
+_récursive ou nom(itérative plutôt)
+_type: normale ou inverse(type de résolution !!!)
+_clase: type d'objet demandé
+>Réponse:
+_ressource issue de la résolution(constituée de type - durée de validitée(ttl) - objet associé au nom pointé dans l'arbre)
+_type(qui indique comment interpreter les donnees associees(enregistrements DNS))
+_durée de vie(durée de validitée de l'information reçu)
+
+8-4-Configuration des indications de racine: 
+8-5-Configuration des redirecteurs:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
