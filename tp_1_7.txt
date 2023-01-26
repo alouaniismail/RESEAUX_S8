@@ -302,7 +302,7 @@ Autres informations: serveurs SIP par exemple, etc....
 Un serveur de noms définit une zone, c'est à dire un ensemble de domaines sur lequel le serveur a autoritée.
 Exemple: requête envoyée au serveur de nom
 	*Si celui-ci possède l'enregistrement dans son cache, il l'envoie à l'application, dans le cas contraire il interroge un serveur racine. 
-	*Le serveur de nom racibe renvoie une liste de serveurs de noms faisant autoritée sur le domaine. 
+	*Le serveur de nom racine renvoie une liste de serveurs de noms faisant autoritée sur le domaine. 
 Exemple(comme ça, cela va être compréhensible):
 =>Le serveur DNS de l'enseirb a autorité sur le domaine enseirb-matmeca.fr.(si on veut une adresse chelou à résoudre, on va utiliser le ROOT (l'appeler itérativement ou récursivement) qui va nous conduire au serveur DNS de l'enseirb.(serveur de noms) 
 (c'est trivial que enseirb-matmeca comme domaine, le serveur DNS de l'enseirb ait autorité sur enseirb-matmeca.fr comme nom de domaine)
