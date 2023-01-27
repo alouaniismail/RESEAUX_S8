@@ -344,17 +344,81 @@ _durée de vie(durée de validitée de l'information reçu)
 8-4-Configuration des indications de racine: 
 8-5-Configuration des redirecteurs:
 
+1)-Configuration des indication de racine:
+La configuration des indications de racine en DNS (Domain Name System) consiste à définir les serveurs DNS qui gèrent les domaines de premier niveau (comme .fr, .com, etc.). Ces serveurs sont appelés serveurs de racine et ils sont responsables de diriger les demandes de résolution de nom vers les serveurs de domaine appropriés. Les indications de racine sont généralement définies par les fournisseurs d'accès à Internet (FAI) ou les administrateurs réseau, et elles peuvent varier en fonction de la configuration du réseau.
+=>Lorsque le serveur DNS n'est pas configuré pour utilisé des redirecteurs, il se sert des indications racine pour résoudre les noms d'hôtes ou les les @IP appartenant à des zones qui n'hébèrge pas.
+=>Les indications de racine sont un ensemble de serveurs hébergeant la zone contenant les enregistrements du domaine racine ou <<.>>
+=>(!!!) les 'serveurs DNS racines' sont au nombre 13 à travers le monde. Il appartiennent tous à un même domaine nommé root-servers.net.
+=>(!!!) serveur de <a> à <m> exemple C.ROOT-SERVERS.org ayant une adresse anycast. 
+=>(!!!) cela signifie que si le serveur DNS reçoit une requête DNS dont il ignore la réponse, il va contacter un de ces serveurs racine pour l'obtenir la réponse. 
 
+RQ:
+>Un proxy (litt. « mandataire ») est un composant logiciel informatique qui joue le rôle d'intermédiaire en se plaçant entre deux hôtes pour faciliter ou surveiller leurs échanges.
+>>Un proxy est une passerelle qui sert d'intermédiaire entre votre ordinateur et les sites web et services Internet que vous utilisez. Il peut faire office de pare-feu, de filtre, de cache ou faciliter les connexions réseau partagées.
 
+2)-Configuration des redirecteurs: 
+Les redirecteurs DNS sont utilisés pour rediriger les demandes DNS vers un autre serveur DNS. Cela permet de déléguer la gestion de sous-domaines à un autre administrateur, ou de rediriger les utilisateurs vers des serveurs de contenu différents en fonction de leur emplacement géographique. La configuration de ces redirecteurs est généralement effectuée en ajoutant des enregistrements DNS de type NS (Name Server) ou CNAME (Canonical Name) pour pointer vers le serveur de redirection souhaité.(NS=>noms de serveur, CNAME=> nom canonique donné au label)
+=>Lorsque le serveur DNS n'est pas capable de résoudre un nom en @IP, il va essayer de contacter un autre serveur DNS->DNS redirecteur(attention à la disponibilitée de service).
+=>Il est possible de configurer un ou plusieurs redirecteurs pour un domaine précis.
+=>(!!!!) L'utilisation des redirecteurs permet d'utiliser des serveurs DNS locaux pour résoudre les enregristrements de ressources des dommaines locaux et des serveurs DNS extèrieurs pour résoudre les enregistrements de ressources des domaines Internet.
 
+8-6-Géolocalisation des adresses IP:
+DNS leaks: fuites d'informations causés par le DNS
+(on démarre le DNS, il nous dit qu'il a été résolu par ce serveur de nom, du coup on dispose de l'@ IP du solveur et de l'@IP de l'émetteur, à la fin, les allocations mémoires ne sont pas mappées en mémoires, mais perdues, d'où les DNS leaks<=>fuites d'infos causés par le DNS.).
+__http://www.dnsleaktest.com/
+<=>Correspondance entre une @IP et un emplacement géographique (une rue dans une ville par exemple).
+***Les FAIs(ISP: Internet Service Provider) vendent les correspondances à des entreprises spécialisés dans la géolocalisation des adresses. 
+	Exemple de sites offrants la géolocalisation: http://www.infosniper.net/
+	=>ça permet depuis une @ IP de deduire l'emplacement géographique correspondant.
 
+8-7-Utilisation directe du DNS:
+8-8-Configuration d'un client DNS:
 
+a)-
+sudo apt update 
+sudp apt-get install net-tools
+(cela install ifconfig le 1er outil d'arme principal)
+la suite:
+>
+*
+.nslookup -debug apparaît comme option intéressante pour consulter le cache résultant d'un parcours et d'un résultat final DNS.
+.ipconfig/displaydns marche surtout sur windows (pas UNIX, même les distributions Debian, et la commande modifiable: $ipconfig/diaplaydns)
+.systemd-resolve --flush-cache (systemd-resolve pour résoudre depuis le système et agir avec: --flush-caches avec s à la fin.)
+.utilisation de nslookup ancienne=>migration vers dig (mieux).
+.dig enseirb-matmeca.fr MX => depuis l'enseirb-matmeca, la résolution sur le port 53 comme entitée d'application va me dire quel est la liste de serveur de courrier électronique et préférences. (dig <<domain information gropper>>)
+.sudo apt install whois
+.whois enseirb-matmeca.fr=>donne un ensemble d'informations rassemblant même le message final et le numéro de fax.
+.exemple de set<OPTION>=Value:
+=>set retransmission=1000, si le paquet n'est confirmé après 1000 millisecondes, il sera retransmis.(durée de temporisation) 
 
+b)-
 
+>
+*
+.Le fichier /etc/resolv.conf sur un système d'exploitation basé sur UNIX ou Linux contient des informations sur les serveurs DNS utilisés pour résoudre les noms de domaine. Il contient généralement au moins une ligne spécifiant un serveur DNS (par exemple "nameserver 8.8.8.8") qui indique au système d'utiliser ce serveur pour résoudre les noms de domaine. Il peut également contenir des options de configuration supplémentaires telles que "search" qui spécifie un domaine de recherche par défaut ou "options" qui peut être utilisé pour configurer des comportements supplémentaires de résolution de nom.(127.0.0.53 edns0 est notre serveur DNS propre à notre système d'exploitation)
+.OpenDNS est un service de résolution de noms de domaine (DNS) qui peut être utilisé pour naviguer sur Internet en toute sécurité. Il est disponible en français et peut être utilisé sur les réseaux domestiques et professionnels. Il offre des fonctionnalités de filtrage de contenu pour bloquer les sites malveillants et les sites inappropriés, ainsi qu'une protection contre les phishing(obtention d'infos sensibles tels que les mots de passe, les numéros de carte de crédits, les idéntifiants aux applications regroupantes, etc ....) et les logiciels malveillants.
+.Proxychains est un outil qui permet aux utilisateurs de configurer et d'utiliser des chaînes de proxy pour masquer leur adresse IP réelle. Les utilisateurs peuvent configurer des chaînes de proxy pour transmettre leur trafic à travers plusieurs proxy différents avant d'atteindre leur destination, ce qui leur permet de masquer leur adresse IP réelle et de protéger leur vie privée en ligne. Tor(.oignion) est un réseau de routage en oignon qui permet de transiter des données cryptées à travers plusieurs noeuds avant d'atteindre la destination. On se protège avec un VPN avant normalement. 
+.Conclusion de ces 2 états d'utilisation effective: En combinant Tor et proxychains, les utilisateurs peuvent bénéficier des avantages de chacun de ces outils pour une protection accrue de leur vie privée en ligne. Tor permet de masquer l'adresse IP réelle et de protéger la confidentialité en ligne en cryptant les données et en les transmettant à travers plusieurs relais. Et proxychains permet de masquer l'adresse IP réelle en transmettant le trafic à travers plusieurs proxy différents. En utilisant ces deux outils en combinaison, les utilisateurs peuvent bénéficier d'un niveau supplémentaire de sécurité et de confidentialité en ligne.
+.=>Méthode pour créer un OpenDNS. (par exemple).
 
+8-9-Carte mondiale de DNS:
 
+8-10-Configuration de root DNS server:
+>>>Un serveur DNS racine (ou "root DNS server" en anglais) est un serveur qui contient les informations de base sur les domaines de premier niveau (comme .com, .fr, etc.) et qui sert de point de départ pour la résolution des noms de domaines. Il est généralement configuré pour répondre aux requêtes DNS en fournissant les informations de serveurs DNS autoritatifs pour les domaines de premier niveau. 
+Très IMPORTANT: !!!!!
+	La configuration d'un serveur DNS racine comprend généralement la définition des informations de zone pour les domaines de premier niveau, ainsi que la configuration des paramètres réseau pour permettre aux clients de se connecter au serveur.
 
-
-
-
-
+8-11-Architecture DNS vs. DoH:
+Un user envoie une requête www.domain.com son solveur DNS c'est son serveur en tout cas son résolveur qui est en même temps son fournisseur d'accés ou bien Entreprise (Resolveur DNS) puis celui-là n'arrive pas à résoudre, on a tapé une adresse relative au fournisseur ou l'entreprise du coup on se retrouve dans les noms de domaines des 2 c'est à dire un résolveur qui est un serveur DNS qui va pas savoir comment résoudre l'adresse il va ensuite faire une démarche:
+>Qui gère .com?(TLD) => serveur DNS racine
+>Qui gère domaine.com => serveurs DNS d'autorité du TLD(.com,.fr)
+>serveurs dns d'autorité du domaine (domaine.com) c'est le serveur dns qui va résoudre. tout cela constitue des serveurs d'autorité(échelle d'autorité plutôt).(www.domain.com?(re-question possible ici dans ce contexte))
+AINSI:
+	*__depuis le .com on a un serveur dns racine qui est appelé.
+	*__depuis le domain.com, un serveur dns d'autorité du tls (du et pas sur) est appele
+	*__depuis www.domain.com, un serveur DNS qui a autorité sur le domaine (domaine.com bien sûr mais pas .com) fait ce qui doit être fait en prenant la relève.
+2ième partie: Doh:(DNS over HTTPS)
+En résumé,
+DNS (Domain Name System) est un système qui permet de convertir les noms de domaines en adresses IP. Il permet aux utilisateurs de se connecter aux sites web en utilisant des noms de domaines plutôt qu'en saisissant des adresses IP numériques. DOH (DNS over HTTPS) est une extension de DNS qui permet de crypter les requêtes DNS pour protéger la confidentialité des utilisateurs et éviter les attaques de type "man-in-the-middle". Il utilise le protocole HTTPS pour crypter les requêtes DNS et les rendre plus difficiles à détourner ou à bloquer. En résumé, DNS est un système de nommage pour les adresses IP, DOH est une extension qui permet d'utiliser le protocole HTTPS pour crypter les requêtes DNS.
+Rq:
+Une requête DNS transite de d'un résolveur publique ou privée pour pointer (arriver (transiter vers)) un serveur d'autorité. 
