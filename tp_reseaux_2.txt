@@ -1,0 +1,175 @@
+dig=>domain information groper : commande phare pour le DNS.
+N'oubliez pas de terminer vos noms de domaine par un point(FQDN??)
+=============================================================
+
+QST1. Trouvons l'adresse ip de notre machine:
+Solution:
+Rappel pour ne pas se tromper sur les adresses privées: 
+Les adresses privées:
+->10.0.0.0 jusqu'à 10.255.255.255 (classe A) 
+->172.16.0.0 jusqu'à 172.31.255.255 (classe B)
+->192.168.0.0 jusqu'à 192.168.255.255 (classe C)
+Rappel2:
+*hostname: le nom de la machine.
+*hostname -i: l'@ IP de notre machine.(privée)
+Même ici:
+ssh ialouani@ssh.enseirb-matmeca.fr puis hostname -i cela va donner une adresse privée!
+ici non, hostname -i donne: 127.0.0.1.
+En cas d'adresse privee du DHCP et pas de NAT prévue, on recommande ceci:
+->public:
+Avant traceroute vu que sudo apt install nettools n'arrive pas à réapprivoisiner le tout, on fait:
+1/sudo apt install inetutils-traceroute
+2/sudo apt install traceroute
+Remarque:(!!!)
+	"127.0.0.1" n'est pas l'adresse IP publique de votre machine sur internet, mais plutôt une adresse IP locale, appelée "boucle locale" ou "localhost", qui est utilisée pour se connecter à soi-même sur la même machine. Cette adresse IP est généralement utilisée pour développer et tester des applications et des services réseau sur une machine individuelle avant de les déployer sur un réseau plus large.
+DONC: ce n'est pas notre réponse.
+
+Autres:
+=======
+__Astuces__:
+Utiliser des sites connus:
+myip.com ou d'après le cours: dnsleaktest.com(même résultat)
+=>l'@IP de ma machine est à présent: 46.193.3.94
+
+-L'@IP de www.google.com:
+(
+Hors sujet: 
+**traceroute/tracepath www.google.com
+on fait après:
+ping www.google.com (respecter l'entièrete du nom)
+puis on remonte donc dans la suite des adresses affichées jusqu'à à en déduire: l'@ IP de www.google.com.
+=>142.250.179.100 (le truc au commun tout au début)
+((RQ de travers: dig +short www.google.com donne le même résultat.))
+On retrouve des adresses privées notamment dérivation de la notre après la suite des appels. 
+(l'@IP précédente n'est pas privée, c'est la publique de www.google.com sur le serveur interrogé selon notre position géographique)
+)
+
+-Appel de dig sans arguments affiche les 13 serveurs racine DNS.(retirer l'@IP de notre propre serveur DNS(SERVER: ....#53(de même sans #53(53: port du serveur dns)) ; dig . mieux respecte la convention.)
+[
+Rq(autres):(!!)
+
+	***appeler dig sans argument fait répondre les 13 serveurs racine dns classiques.(a à m puis root-servers.net à la fin de ??.)
+
+	***(iplocation.net: '147.210.204.174' donne l'adresse ip directement)
+ ceux avec un '' c'est relatif au travail lors de la séance.
+
+	***Un serveur DNS local est un serveur DNS qui est installé sur un réseau local, généralement dans un environnement d'entreprise ou une petite entreprise. Il s'agit d'un serveur DNS qui est dédié à la résolution de noms de domaines pour les ordinateurs connectés au réseau local comme celui dont l'adresse tout en haut au début appartient.
+]
+
+Annexes:(1/1)::
+==========================================================================
+ssh ialouani@ssh.enseirb-matmeca.fr puis: ssh travail 64 pour basculer sur la branche travail 64:
+Appliquez:
+--> ping ssh / traceroute ssh: 10.21.18.195. (@IP de ssh privée)
+en travail64:~> (les 2: 1/ && 2/)
+1/
+dig +short www.google.com A
+	Réponse: 172.217.18.36.
+2/
+dig +short enseirb-matmeca.fr SOA (sans le www.`${la suite}`)
+-->ns.enseirb-matmeca.fr (ns. qui est la zone d'autorité qui va être intéroggé pour résoudre les adresses IP en cas de blocage)
+-->hostmaster.bordeaux-inp.fr (hostmaster. qui est la zone d'autorité 2 qui va être intéroggé pour résoudre les adresses IP en cas de blocage)
+==========================================================================
+
+--Le 8.8.8.8 est l'adresse de DNS de google on écrit www.enseirb-matmeca.fr on obtient data dans un paquet json qui contient l'adresse publique.
+2->:
+--dig +short enseirb-matmeca.fr MX les serveurs qui peuvent gérer le relais d'email, sans short, on aura:
+	(voici le détail là-dessous)
+	SERVER: 10.210.18.138#53 ce qui implique une adresse de serveur DNS privée.
+
+--(2ième partie)
+	avec dig +short enseirb-matmeca.fr MX, 10 ça signifie le numéro de prioritée à consulter.
+(à retenir)
+Remarque : même : 127.0.0.53 est une adresse bizarre.
+(!! la succession de .0.0. !!).
+------------------------------------------------------------------------------------------------
+
+
+Tous les serveurs qui gèrent le domaine .fr.(dig +short enseirb-matmeca.fr NS), mais ici on retrouve:
+---nspart01.u-bordeaux.fr.
+---ns.bordeaux-inp.fr.
+Ce sont les serveurs de noms responsables de ce domaine. Voilà. 
+
+--Avec SOA c'est différent, ce sont les serveurs de noms ayant autoritée sur le domaine.--
+(Le NS est plus 'grand' que le SOA)
+
+------------------------------------------------------------------------------------------------
+
+
++:(autres informations importantes à maîtriser)
+---
+	Exemple: Si on veut récupérer qlqs infos concrètes sur AFNIC(organisation qui gère cela) + leur localisation:
+
+Exemple2(illustratif de l'exemple précédent): 
+	``whois enseirb-matmeca.fr.``[donne bcp d'informations nécessaires].
+2 manières de retrouver ces infos en particulier:
+dig +short || whois.
+
+------------------------------------------------------------------------------------------------
+
+dig sans arguments donne: 
+	13 serveurs racine.(serveur de noms(disponibles pour le domaine fr))
+
+((
+
+d.nic.fr.
+f.ext.nic.fr.
+e.ext.nic.fr.
+g.ext.nic.fr.
+(AFNIC les gère la largeur numéro 1 de l'arborescence dns)
+(après : whois afnic.fr pour savoir si c'est bon, après : dig +short afnic.fr NS donne cela sur la machine où on travaille cela a donné cela:
+ns{1..3}.nic.fr.)
+))
+
+------------------------------------------------------------------------------------------------
+
+
+RQ:(!!!!)
+En Pratique, whois enseirb-matmeca.fr, nserver nserver donne le resultat de la commande dig +short(en ce qui concerne NS nserver voilà)
+------------------------------------------------------------------------------------------------
+
+QST5.&& QST6. && QST7. (AFNIC.FR à retenir)
+QST8.
+>Pour la résolution inverse, dig -x, on trouve: 
+	yf1.yahoo.com.
+	cmd: dig +short -x 68.142.254.15.(comme demandée)
+
+------------------------------------------------------------------------------------------------
+
+
+(utiliser le dns pour exfiltrer les données, faire semblant de faire un requête dns par exemple dig A username@rslt => j'utilise le serveur propre à moi(pirater) : deviner l'@ IP sur un même réseau pour terminer les fragments et pirater ce qu'il doit.)
+------------------------------------------------------------------------------------------------
+
+(dig A http get index.html(on recoît une requête qui n'est pas filtrée) puis on fait une: reçoit le résultat de la requête(trucs de cours/piratage))
+
+----------------------------------------------------------------------------------------------- 
+
+(QST4. avant: fin de la première partie avec le commentaire ci-dessus)
+================================================================================================
+QST2. && QST3. (concerne le .sh et cat /etc/resolv.conf qui contient des infos sur le serveur dns local qui a 3 objectifs principaux)
+>Trouver les serveurs de la zone racine:
+	Faire: dig .(sans le point parfois) ca fait ressortir tous les types root: a->m.root-servers.net. Voilà.
+================================================================================================
+
+QST9/10: réglées d'après ce qui précède, reste en moyen ce qui suit:
+
+-L'@ privée(info à retenir) de enseirb-matmeca: 10.210.18.56.(on doit ecrire toute l'adresse à ce qu'il paraît)
+
+--ssh eleve@lab-enseirb.atinternet.fr Le mot de passe est: SunnyB00tz!
+(sur ce serveur, la recherche de l'@ IP de google donne plusieurs résultats:
+74.125.193.104
+74.125.193.105
+74.125.193.106
+74.125.193.147
+74.125.193.99
+74.125.193.103)
+Tous publics. 
+
+
+eleve@lab-enseirb:~$ dig +short ssh.enseirb-matmeca.fr A (on complète l'adresse pour obtenir l'adresse ip du serveur de nom/nom de domaine ssh)
+=>147.210.19.195(public et pas privée comme au début.)
+
+la commande via l'adresse du site complet.
+Et voilà.
+FIN_SEANCE__2.
+FIN 1/7 && 2/7.

@@ -1,0 +1,25 @@
+1-BUT: garder l'anonymat / changer son identitée sur Internet.
+Rq: Certains fournisseurs offrent des services en fonction de votre lieu géographique.
+Exemple: Netflix.
+
+->Pour changer son identitee:
+-Utilisation de proxy: interface ordi~ similaire à la demande qui récupère la requête et l'envoie sur le bon destinattaire, ce dernier a des propriétées non violables du coup on récupère des données interdites et on le balance depuis le proxy à l'ordi~ demandeur.
+-Utilisation de proxychains.(chaine de proxy)
+-Utilisation de VPN. (altérer son adresse IP pour se faire une place ailleurs alors que notre place reste la même)
+
+========================================
+
+2/Utilisation de TOR:
+chaine d'utilisateurs
+<=>Torify an application.
+->Faire passer le trafic d'une application par TOR empêche un fournisseur de service d'apprendre votre position ou vos habitudes de navigation sur Internet en vous permettant de communiquer anonymement sur Internet.
+=>Combinaison possible avec des proxychains.
+
+===============================================
+
+Resume de la seance (2/7):
+Concentrons nous sur le TP plûtot.
+Barrière: Le protocole HTTP(hypertext transfert protocol)
+et après:
+changer son identitée(VPN)/garder son anonymat(via des proxychains)
+ou utilisation de TOR qui empêche ce que vous avez lu d'être intercepté par le service de fournissement d'Internet dans votre région ; peut être combiné avec des proxychains.(chaine de proxy)
